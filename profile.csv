@@ -1,4 +1,4 @@
 id,name,sex,age,pairId,statusCheck,memo
-1,Kevin,27,2,"Interested","Rose is following"
-1,Kevin,27,5,"Not Interested",
-2,Cindy,22,1,,"unchecked, need to be followed!"
+1,Kevin,man,27,2,"Interested","Rose is following"
+1,Kevin,man,27,5,"Not Interested",
+2,Cindy,woman,22,1,,"unchecked, need to be followed!"

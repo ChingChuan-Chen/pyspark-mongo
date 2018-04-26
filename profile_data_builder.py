@@ -10,13 +10,13 @@ spark = SparkSession\
         .appName("dataTransform")\
         .getOrCreate()
 schema = StructType(
-    StructField("id", IntegerType(), True),
+    [StructField("id", IntegerType(), True),
     StructField("name", StringType(), True),
-    StructField("sex", IntegerType(), True),
+    StructField("sex", StringType(), True),
     StructField("age", IntegerType(), True),
     StructField("pairId", StringType(), True),
     StructField("statusCheck", StringType(), True),
-    StructField("memo", StringType(), True)
+    StructField("memo", StringType(), True)]
 )
 df = spark.createDataFrame(df_pd, schema)
 
@@ -25,5 +25,7 @@ historyCols = ["pairId", "statusCheck", "memo"]
 outDf = df.withColumn("history", struct(*[col(name) for name in historyCols]))\
     .drop(*historyCols).groupBy(*grpByCols)\
     .agg(collect_list(col("history")).alias("history"))
-outDf.show()
-
+uri = 'mongodb://admin:password@192.168.1.112'
+outDf.write.format("com.mongodb.spark.sql.DefaultSource")\
+    .option('uri', uri).option('database', 'admin').option('collection', 'profile')\
+    .mode("append").save()
